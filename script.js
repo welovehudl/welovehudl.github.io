@@ -58,3 +58,49 @@ function animate() {
 }
 
 animate();
+
+function createTechLines() {
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", "100%");
+  svg.setAttribute("style", "position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none;");
+
+  const numLines = 60;
+  const spacing = window.innerHeight / numLines;
+  const width = window.innerWidth;
+  const minX = width * 0.25; // 75% from right (25% of width)
+  const maxX = width * 0.5;  // 50% from right (50% of width)
+
+  for (let i = 0; i < numLines; i++) {
+    const y = i * spacing;
+
+    const lineEndX = Math.random() * (maxX - minX) + minX;
+
+    // Create horizontal line from right to somewhere between 1/2 and 3/4
+    const line = document.createElementNS(svgNS, "line");
+    line.setAttribute("x1", width);
+    line.setAttribute("y1", y);
+    line.setAttribute("x2", lineEndX);
+    line.setAttribute("y2", y);
+    line.setAttribute("stroke", "rgba(255, 255, 255, 0.05)");
+    line.setAttribute("stroke-width", "1");
+    svg.appendChild(line);
+
+    // Add small circles along the line
+    const numCircles = Math.floor(Math.random() * 4) + 1;
+    for (let j = 0; j < numCircles; j++) {
+      const cx = lineEndX + Math.random() * (width - lineEndX);
+      const circle = document.createElementNS(svgNS, "circle");
+      circle.setAttribute("cx", cx);
+      circle.setAttribute("cy", y);
+      circle.setAttribute("r", Math.random() * 2 + 1); // radius between 1–3
+      circle.setAttribute("fill", "rgba(255, 255, 255, 0.1)");
+      svg.appendChild(circle);
+    }
+  }
+
+  document.getElementById('background').appendChild(svg);
+}
+
+createTechLines();
